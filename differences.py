@@ -28,37 +28,42 @@ def difficulty_of_difference(minuend: int, subtrahend: int, radix: int = 10, cac
 
     while subtrahend > 0 or borrow > 0:
         minuend, r_m = divmod(minuend, radix)
-        subtrahendx, r_s = divmod(subtrahend, radix)
+        subtrahend, r_s = divmod(subtrahend, radix)
 
         tuple_ = (r_m, r_s, borrow)
 
+        r_m -= borrow
 
-        if tuple_ in cache:
+        if r_s > r_m:
+            borrow = 1
+
+        if r_m == r_s:
+            # Zero difference
+            pass
+        elif tuple_ in cache:
             # Recall result of the same operation, recently done. 
             retval += 1
-        elif r_x == r_y:
-            # doubling can use fast look up in the 2-times table
-            retval += min(r_x, 3) + carry
-        elif r_x % 2 == 0 and r_y % 2 == 0:
+        elif r_m == 2*r_s:
+            retval += min(r_s, 2)
+        elif r_m % 2 == 0 and r_s % 2 == 0:
             # subtract 1 if both digits are even
-            retval += max(0, min(r_x, r_y)-1) + carry
+            retval += max(1, r_s - 1)
         else:
-            # add the smaller digit to the larger one, 
-            # plus the carry bit.
-            retval += min(r_x, r_y) + carry
+            # the carry bit allows larger digits to be subtracted.
+            retval += min(r_m - r_s, r_s)
 
 
-        # Extra operation to add the carry.
-        retval += carry
+        # Extra operation to add the borrow.
+        retval += borrow
 
         cache.append(tuple_)
 
-        carry, partial_sum = divmod(r_x + r_y + carry, radix)
-        result += partial_sum*multiplier
+        partial_sum_of_diff = r_m - r_s
+        result += partial_sum_of_diff*multiplier
 
 
-        # Extra operation to store the carry
-        retval += carry
+        # Extra operation to store the borrowed bit
+        retval += borrow
 
 
         multiplier *= radix
