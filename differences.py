@@ -2,7 +2,7 @@ import sys
 import collections
 
 
-N = int((sys.argv[1:2] or [100_000])[0])
+N = int((sys.argv[1:2] or [123_456])[0])
 
 MAX = int((sys.argv[2:3] or [200_000])[0])
 
@@ -15,20 +15,21 @@ def difficulty_of_difference(minuend: int, subtrahend: int, radix: int = 10, cac
     
     cache = collections.deque([], maxlen=cache_size)
 
+    m, s = minuend, subtrahend
 
-    if minuend < subtrahend:
-        minuend, subtrahend = subtrahend, minuend
+    if m < s:
+        m, s = s, m
     
-    assert minuend >= subtrahend
+    assert m >= s
 
     borrow = 0
     retval = 0
 
     result, multiplier = 0, 1
 
-    while subtrahend > 0 or borrow > 0:
-        minuend, r_m = divmod(minuend, radix)
-        subtrahend, r_s = divmod(subtrahend, radix)
+    while s > 0 or borrow > 0:
+        m, r_m = divmod(m, radix)
+        s, r_s = divmod(s, radix)
 
         tuple_ = (r_m, r_s, borrow)
 
@@ -36,21 +37,29 @@ def difficulty_of_difference(minuend: int, subtrahend: int, radix: int = 10, cac
 
         if r_s > r_m:
             borrow = 1
+        else:
+            borrow = 0
 
         if r_m == r_s:
             # Zero difference
             pass
+        elif r_s + 1 == radix:
+            # subtract 9 <=> add 10 & subtract 1
+            retval += 1
         elif tuple_ in cache:
             # Recall result of the same operation, recently done. 
             retval += 1
-        elif r_m == 2*r_s:
+        elif 2*r_s == r_m:
+            # Subtract half of self is not so hard.
             retval += min(r_s, 2)
         elif r_m % 2 == 0 and r_s % 2 == 0:
             # subtract 1 if both digits are even
             retval += max(1, r_s - 1)
         else:
-            # the carry bit allows larger digits to be subtracted.
-            retval += min(r_m - r_s, r_s)
+            # the borrowed-bit allows larger digits to be subtracted,
+            # don't add extra difficulty for the borrow.
+            retval += r_s
+            # min(r_m - r_s, r_s)
 
 
         # Extra operation to add the borrow.
@@ -58,7 +67,7 @@ def difficulty_of_difference(minuend: int, subtrahend: int, radix: int = 10, cac
 
         cache.append(tuple_)
 
-        partial_sum_of_diff = r_m - r_s
+        partial_sum_of_diff = radix*borrow + r_m - r_s
         result += partial_sum_of_diff*multiplier
 
 
@@ -68,9 +77,9 @@ def difficulty_of_difference(minuend: int, subtrahend: int, radix: int = 10, cac
 
         multiplier *= radix
         
-    result += multiplier * y
+    result += multiplier * m
 
-    assert result == sum(summands), f'{result=}, {summands=}, {carry=}, {multiplier=}, {radix=}'
+    assert result == minuend - subtrahend, f'{result=}, {minuend} - {subtrahend}, {borrow=}, {multiplier=}, {radix=}'
 
     return retval
 
@@ -78,13 +87,15 @@ def difficulty_of_difference(minuend: int, subtrahend: int, radix: int = 10, cac
 levels = collections.defaultdict(list)
 
 
-for summands in two_partitions():
-    level = difficulty_of_sum_for_humans(summands)
-    levels[level].append(summands)
+for i, (minuend, subtrahend) in enumerate(differences()):
+    level = difficulty_of_difference(minuend, subtrahend)
+    levels[level].append((minuend, subtrahend))
+    # if i >= 18:
+    #     break
 
 
-def sums_not_ending_in(sums, end_digits_to_exclude):
-    for tuple_ in sums:
+def nums_not_ending_in(nums, end_digits_to_exclude):
+    for tuple_ in nums:
         if tuple_[0] % 10 in end_digits_to_exclude:
             continue
         yield tuple_
@@ -92,8 +103,8 @@ def sums_not_ending_in(sums, end_digits_to_exclude):
 
 
 for level in sorted(levels)[:-1]:
-    sums = levels[level]
-    print(f'Level {level} sums: {sums[:4]},..,{sums[-4:]}')
+    diffs = levels[level]
+    print(f'Level {level} subtractions: {diffs[:4]},..,{diffs[-4:]}')
 
     # exc_ending_in_5 = list(sums_not_ending_in(sums, [5]))
     # print(f'(exc ending in 5): {exc_ending_in_5[:4]},..,{exc_ending_in_5[-4:]}')
@@ -101,9 +112,9 @@ for level in sorted(levels)[:-1]:
 
 hardest_level = max(levels)
 
-hardest_sums = levels[hardest_level]
+hardest_diffs = levels[hardest_level]
 
-print(f'Hardest sums (level: {hardest_level}): {hardest_sums[:4]},..,{hardest_sums[-4:]}')
+print(f'Hardest subtractions (level: {hardest_level}): {hardest_diffs[:4]},..,{hardest_diffs[-4:]}')
 
 
 # hardest_sums_not_ending_in_5 = list(sums_not_ending_in(hardest_sums, [5]))
