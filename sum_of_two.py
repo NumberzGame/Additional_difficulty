@@ -10,7 +10,7 @@ def two_partitions(n = N):
         yield i, N-i
 
 
-def difficulty_of_sum_for_humans(summands: tuple[int], radix: int = 10, cache_size = 3) -> int:
+def difficulty_of_sum(summands: tuple[int], radix: int = 10, cache_size = 3) -> int:
     
     cache = collections.deque([], maxlen=cache_size)
 
@@ -36,10 +36,14 @@ def difficulty_of_sum_for_humans(summands: tuple[int], radix: int = 10, cache_si
         if tuple_ in cache:
             retval += 1
         elif r_x == r_y:
+            # doubling can use fast look up in the 2-times table
             retval += min(r_x, 3) + carry
         elif r_x % 2 == 0 and r_y % 2 == 0:
+            # subtract 1 if both digits are even
             retval += max(0, min(r_x, r_y)-1) + carry
         else:
+            # add the smaller digit to the larger one, 
+            # plus the carry bit.
             retval += min(r_x, r_y) + carry
 
 
@@ -69,7 +73,7 @@ levels = collections.defaultdict(list)
 
 
 for summands in two_partitions():
-    level = difficulty_of_sum_for_humans(summands)
+    level = difficulty_of_sum(summands)
     levels[level].append(summands)
 
 
