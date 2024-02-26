@@ -86,6 +86,7 @@ def sums_not_ending_in(sums, end_digits_to_exclude):
 
 
 for level in sorted(levels)[:-1]:
+    break
     sums = levels[level]
     print(f'Level {level} sums: {sums[:4]},..,{sums[-4:]}')
 
@@ -97,8 +98,11 @@ hardest_level = max(levels)
 
 hardest_sums = levels[hardest_level]
 
-print(f'Hardest sums (level: {hardest_level}): {hardest_sums[:4]},..,{hardest_sums[-4:]}')
+# print(f'Hardest sums (level: {hardest_level}): {hardest_sums[:4]},..,{hardest_sums[-4:]}')
 
 
 # hardest_sums_not_ending_in_5 = list(sums_not_ending_in(hardest_sums, [5]))
 # print(f'Hardest sums not ending in 5: {hardest_sums_not_ending_in_5[:4]},..,{hardest_sums_not_ending_in_5[-4:]}')
+
+
+print('\n'.join(str(tuple_) for tuple_ in hardest_sums))
