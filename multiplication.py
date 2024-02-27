@@ -1,5 +1,7 @@
 import sys
+import json
 import math
+import pathlib
 import collections
 from typing import Iterator, Iterable
 
@@ -7,19 +9,35 @@ start_x = int((sys.argv[1:2] or [100_000])[0])
 
 class ErathosthenesFactoriser:
 
-    primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31]
-
     # not primes, sieved out
     # composites = set()
     # Stand in for an OrderedSet 
     composites = {}
 
-    all_primes_known_up_to_inclusive = 31
+    cache_file = pathlib.Path(__file__).parent / 'primes.json'
+
+    primes = [2, 3,] #5, 7, 11, 13, 
+             # 17, 19, 23, 29, 31]
+
+    # must be odd
+    all_primes_known_up_to_inclusive = 3 #31
 
     def __init__(self, primes: list[int] = None):
 
+
+        # TODO: Make this update the class variable
+        # instead of replacing it.
         if primes is not None:
             self.primes = primes
+        else:
+            try:
+                with self.cache_file.open('rt') as f: 
+                    self.primes = json.load(f)
+            except:
+                # Use ErathosthenesFactoriser.primes 
+                pass 
+
+
 
         assert any(x % 2 for x in self.primes), "ErathosthenesFactoriser.primes must contain 3"
         assert self.primes[0] == 2 and self.primes[1] == 3, """primes must contain 2 and 3, and 
@@ -94,6 +112,25 @@ class ErathosthenesFactoriser:
 
         assert check == start_x
 
+        with self.cache_file.open('w+t') as f: 
+            try:
+                cached_primes = json.load(f)
+            except:
+                cached_primes = []
+            all_primes = {p 
+                          for p in self.primes 
+                          if p <= self.all_primes_known_up_to_inclusive
+                         } 
+            all_primes.update(
+                          p 
+                          for p in self.primes + cached_primes
+                          if p > self.all_primes_known_up_to_inclusive
+                         )
+    
+            json.dump(sorted(all_primes), f, separators=(',\n', ': ')) 
+
+
+
         return prime_factorisation
 
 
@@ -106,9 +143,11 @@ class ErathosthenesFactoriser:
         # so that self.primes[-1] is odd.
 
         sieve_up_to_inclusive = max(test_up_to_inclusive, 
-                                    next(p**2 
-                                         for p in self.primes
-                                         if p**2 >= test_up_to_inclusive
+                                    next((p**2 
+                                          for p in self.primes
+                                          if p**2 >= test_up_to_inclusive
+                                         ),
+                                         0
                                         )
                                    )
 
@@ -119,19 +158,20 @@ class ErathosthenesFactoriser:
             # self.composites.add(composite)
             self.composites[composite] = None
 
-        start = self.primes[-1] + 2
+        start = self.all_primes_known_up_to_inclusive + 2
         if start < p**2:
             print(f'searching for new primes from: {start}')
             for candidate in range(start, p**2, 2):
                 if candidate not in self.composites:
                     print(f'''New prime: {candidate} found! 
                             ({p=}, bound: {test_up_to_inclusive} )'''.replace('  ','')
-                        )
+                         )
                     self.primes.append(candidate)
 
         if p**2 > self.all_primes_known_up_to_inclusive:
             print(f'Updating to primes known bounds to {p**2}')
             self.all_primes_known_up_to_inclusive = p**2
+
 
 if __name__ == '__main__':
     ef = ErathosthenesFactoriser()
