@@ -94,10 +94,12 @@ class ErathosthenesFactoriser:
 
             if p > test_up_to_inclusive:
                 # All prime factors have been divided out up to 
-                # some prime p**2 > x.  Therefore x is prime. 
-                prime_factorisation.update([x])
-                if x not in self.primes:
-                    self.primes.append(x)
+                # some prime p**2 > x.  Therefore x is 1 or prime.
+
+                if x != 1: 
+                    prime_factorisation.update([x])
+                    if x not in self.primes:
+                        self.primes.append(x)
                 break
 
             i += 1
@@ -183,7 +185,7 @@ class ErathosthenesFactoriser:
                     self.primes.append(candidate)
 
         if p**2 > self.all_primes_known_up_to_inclusive:
-            print(f'Updating to primes known bounds to {p**2}')
+            # print(f'Updating to primes known bounds to {p**2}')
             self.all_primes_known_up_to_inclusive = p**2
 
 
