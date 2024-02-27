@@ -1,108 +1,149 @@
 import sys
+import math
 import collections
+import itertools
+from typing import Iterator
+
+from factoriser import ErathosthenesFactoriser
+from sum_of_two import difficulty_of_sum
+
+if len(sys.argv) >= 2:
+    N = int(sys.argv[1])
+else:
+    N = 100_000
 
 
-N = int((sys.argv[1:2] or [100_000])[0])
+class ProductsGenerator:
+    def __init__(self, factoriser : ErathosthenesFactoriser = None):
+        self.factoriser = factoriser or ErathosthenesFactoriser()
 
 
-def two_partitions(n = N):
-    for i in range(1, (N // 2) + 1):
-        yield i, N-i
+    def two_products(self, n: int = N) -> Iterator[tuple[int, int]]:
+        
+        prime_factorisation = self.factoriser.factorise(n)
+        
+        yield from self._two_factor_products(prime_factorisation)
 
 
-def difficulty_of_sum(summands: tuple[int], radix: int = 10, cache_size = 3) -> int:
+    def _two_factor_products(self, prime_factorisation):
+        prime, exponent = prime_factorisation.popitem()
+
+        for i in range((exponent // 2) + 1):
+            if prime_factorisation:
+                factors = self._two_factor_products(prime_factorisation)
+            else:
+                factors = [(1, 1)]
+            
+            for a, b in factors:
+                yield a * (prime ** i), b * (prime ** (exponent - i))
+                if a == b:
+                    continue
+                
+                yield b * (prime ** i), a * (prime ** (exponent - i))
+
+
+def digits(x: int, radix: int = 10):
+    while x:
+        x, r = divmod(x, radix)
+        yield r
+
+
+def difficulty_of_product_of_digits(d_1: int, d_2: int, radix: int = 10):
+    
+    product = d_1 * d_2
+    
+    if product == 0 or 1 in (d_1, d_2):
+        return 1
+
+    if product <= radix:
+        # 2*3, ..., 2*5 and 3*3
+        return 2 
+
+    if any(radix % x == 0 for x in (d_1, d_2)) or product <= 2.4 * radix:
+        # 2, 5 or a power of 2
+        return 3
+
+    if product == 49:
+        return 5
+
+    return 4
+
+    
+
+
+
+def difficulty_of_product(factors: tuple[int, int], radix: int = 10, cache_size = 3) -> int:
     
     cache = collections.deque([], maxlen=cache_size)
 
-    x, y = summands
+    a, b = factors
 
-    if y < x:
-        x, y = y, x
+    if a > b:
+        a, b = b, a
     
-    assert x <= y
+    assert a <= b
 
-    carry = 0
     retval = 0
 
     result, multiplier = 0, 1
 
-    while x > 0 or carry > 0:
-        x, r_x = divmod(x, radix)
-        y, r_y = divmod(y, radix)
+    # Grid multiplication.
+    for (i, d_a), (j, d_b) in itertools.product(
+                                        enumerate(digits(a)),
+                                        enumerate(digits(b)),
+                                        ):
 
-        tuple_ = (r_x, r_y, carry)
-
+        tuple_ = (d_a, d_b)
 
         if tuple_ in cache:
             retval += 1
-        elif r_x == r_y:
-            # doubling can use fast look up in the 2-times table
-            retval += min(r_x, 3) + carry
-        elif r_x % 2 == 0 and r_y % 2 == 0:
-            # subtract 1 if both digits are even
-            retval += max(0, min(r_x, r_y)-1) + carry
         else:
-            # add the smaller digit to the larger one, 
-            # plus the carry bit.
-            retval += min(r_x, r_y) + carry
+            retval += difficulty_of_product_of_digits(d_a, d_b)
+
+        partial_sum = d_a * d_b * (radix ** (i + j))
 
 
-        # Extra operation to add the carry.
-        retval += carry
+        retval += difficulty_of_sum((result, partial_sum), radix, cache_size)
 
-        cache.append(tuple_)
+        result += partial_sum
 
-        carry, partial_sum = divmod(r_x + r_y + carry, radix)
-        result += partial_sum*multiplier
+    assert result == math.prod(factors), f'{result=}, {math.prod(factors)=}'
 
-
-        # Extra operation to store the carry
-        retval += carry
-
-
-        multiplier *= radix
-        
-    result += multiplier * y
-
-    assert result == sum(summands), f'{result=}, {summands=}, {carry=}, {multiplier=}, {radix=}'
 
     return retval
 
-
-levels = collections.defaultdict(list)
-
-
-for summands in two_partitions():
-    level = difficulty_of_sum(summands)
-    levels[level].append(summands)
+if __name__ == '__main__':
 
 
-def sums_not_ending_in(sums, end_digits_to_exclude):
-    for tuple_ in sums:
-        if tuple_[0] % 10 in end_digits_to_exclude:
-            continue
-        yield tuple_
+    levels = collections.defaultdict(list)
+
+    prod_gen = ProductsGenerator()
+
+    print(f'Factors: {list(prod_gen.two_products(N))}')
+    
+    for factors in prod_gen.two_products(N):
+        level = difficulty_of_product(factors)
+        levels[level].append(factors)
+
+
+    def tuples_not_ending_in(tuples, end_digits_to_exclude):
+        for tuple_ in tuples:
+            if tuple_[0] % 10 in end_digits_to_exclude:
+                continue
+            yield tuple_
 
 
 
-for level in sorted(levels)[:-1]:
-    break
-    sums = levels[level]
-    print(f'Level {level} sums: {sums[:4]},..,{sums[-4:]}')
-
-    # exc_ending_in_5 = list(sums_not_ending_in(sums, [5]))
-    # print(f'(exc ending in 5): {exc_ending_in_5[:4]},..,{exc_ending_in_5[-4:]}')
+    for level in sorted(levels)[:-1]:
+        products = levels[level]
+        print(f'Level {level} products: {products}')
 
 
-hardest_level = max(levels)
 
-hardest_sums = levels[hardest_level]
+    hardest_level = max(levels)
 
-# print(f'Hardest sums (level: {hardest_level}): {hardest_sums[:4]},..,{hardest_sums[-4:]}')
-
-
-# hardest_sums_not_ending_in_5 = list(sums_not_ending_in(hardest_sums, [5]))
-# print(f'Hardest sums not ending in 5: {hardest_sums_not_ending_in_5[:4]},..,{hardest_sums_not_ending_in_5[-4:]}')
+    hardest_products = levels[hardest_level]
 
 
-print('\n'.join(str(tuple_) for tuple_ in hardest_sums))
+    print(f'Hardest Level (level {hardest_level}) products: {hardest_products}')
+
