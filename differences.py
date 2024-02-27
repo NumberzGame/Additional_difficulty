@@ -7,8 +7,8 @@ N = int((sys.argv[1:2] or [123_456])[0])
 MAX = int((sys.argv[2:3] or [200_000])[0])
 
 def differences(n = N):
-    for i in range(1, MAX - N + 1):
-        yield N + i, i
+    for i in range(1, MAX - n + 1):
+        yield n + i, i
 
 
 def difficulty_of_difference(minuend: int, subtrahend: int, radix: int = 10, cache_size = 3) -> int:
@@ -84,15 +84,6 @@ def difficulty_of_difference(minuend: int, subtrahend: int, radix: int = 10, cac
     return retval
 
 
-levels = collections.defaultdict(list)
-
-
-for i, (minuend, subtrahend) in enumerate(differences()):
-    level = difficulty_of_difference(minuend, subtrahend)
-    levels[level].append((minuend, subtrahend))
-    # if i >= 18:
-    #     break
-
 
 def nums_not_ending_in(nums, end_digits_to_exclude):
     for tuple_ in nums:
@@ -101,21 +92,35 @@ def nums_not_ending_in(nums, end_digits_to_exclude):
         yield tuple_
 
 
+if __name__ == '__main__':
 
-for level in sorted(levels)[:-1]:
-    diffs = levels[level]
-    print(f'Level {level} subtractions: {diffs[:4]},..,{diffs[-4:]}')
-
-    # exc_ending_in_5 = list(sums_not_ending_in(sums, [5]))
-    # print(f'(exc ending in 5): {exc_ending_in_5[:4]},..,{exc_ending_in_5[-4:]}')
+    levels = collections.defaultdict(list)
 
 
-hardest_level = max(levels)
+    for i, (minuend, subtrahend) in enumerate(differences()):
+        level = difficulty_of_difference(minuend, subtrahend)
+        levels[level].append((minuend, subtrahend))
+        # if i >= 18:
+        #     break
 
-hardest_diffs = levels[hardest_level]
-
-print(f'Hardest subtractions (level: {hardest_level}): {hardest_diffs[:4]},..,{hardest_diffs[-4:]}')
 
 
-# hardest_sums_not_ending_in_5 = list(sums_not_ending_in(hardest_sums, [5]))
-# print(f'Hardest sums not ending in 5: {hardest_sums_not_ending_in_5[:4]},..,{hardest_sums_not_ending_in_5[-4:]}')
+
+
+    for level in sorted(levels)[:-1]:
+        diffs = levels[level]
+        print(f'Level {level} subtractions: {diffs[:4]},..,{diffs[-4:]}')
+
+        # exc_ending_in_5 = list(sums_not_ending_in(sums, [5]))
+        # print(f'(exc ending in 5): {exc_ending_in_5[:4]},..,{exc_ending_in_5[-4:]}')
+
+
+    hardest_level = max(levels)
+
+    hardest_diffs = levels[hardest_level]
+
+    print(f'Hardest subtractions (level: {hardest_level}): {hardest_diffs[:4]},..,{hardest_diffs[-4:]}')
+
+
+    # hardest_sums_not_ending_in_5 = list(sums_not_ending_in(hardest_sums, [5]))
+    # print(f'Hardest sums not ending in 5: {hardest_sums_not_ending_in_5[:4]},..,{hardest_sums_not_ending_in_5[-4:]}')

@@ -83,6 +83,9 @@ def difficulty_of_product(factors: tuple[int, int], radix: int = 10, cache_size 
     
     assert a <= b
 
+    if a == 1:
+        return 1
+
     retval = 0
 
     result, multiplier = 0, 1
@@ -119,7 +122,7 @@ if __name__ == '__main__':
 
     prod_gen = ProductsGenerator()
 
-    print(f'Factors: {list(prod_gen.two_products(N))}')
+    # print(f'Factors: {list(prod_gen.two_products(N))}')
     
     for factors in prod_gen.two_products(N):
         level = difficulty_of_product(factors)
