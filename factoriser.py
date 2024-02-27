@@ -98,8 +98,15 @@ class ErathosthenesFactoriser:
 
                 if x != 1: 
                     prime_factorisation.update([x])
-                    if x not in self.primes:
-                        self.primes.append(x)
+
+                    # This can break the "all primes known structure"
+                    # and means an insertion point needs to be found with
+                    # bisect to preserve the sorted order.  By not 
+                    # storing sporadic primes, we can use a simple
+                    # append in the sieve.
+                    # if x not in self.primes:
+                    #     # Need to insert sorted, in case of sporadics.
+                    #     self.primes.append(x)
                 break
 
             i += 1
