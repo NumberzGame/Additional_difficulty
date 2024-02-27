@@ -5,7 +5,10 @@ import pathlib
 import collections
 from typing import Iterator, Iterable
 
-start_x = int((sys.argv[1:2] or [100_000])[0])
+if len(sys.argv) >= 2:
+    start_x = math.prod(int(arg) for arg in sys.argv[1:])
+else:
+    start_x = 100_000
 
 class ErathosthenesFactoriser:
 
@@ -32,7 +35,10 @@ class ErathosthenesFactoriser:
         else:
             try:
                 with self.cache_file.open('rt') as f: 
-                    self.primes = json.load(f)
+                    cache = json.load(f)
+                    self.primes = cache['primes']
+                    self.all_primes_known_up_to_inclusive = cache['all_primes_known_up_to_inclusive']
+
             except:
                 # Use ErathosthenesFactoriser.primes 
                 pass 
@@ -114,7 +120,7 @@ class ErathosthenesFactoriser:
 
         with self.cache_file.open('w+t') as f: 
             try:
-                cached_primes = json.load(f)
+                cached_primes = json.load(f)['primes']
             except:
                 cached_primes = []
             all_primes = {p 
@@ -127,7 +133,12 @@ class ErathosthenesFactoriser:
                           if p > self.all_primes_known_up_to_inclusive
                          )
     
-            json.dump(sorted(all_primes), f, separators=(',\n', ': ')) 
+            cache = dict(
+                all_primes_known_up_to_inclusive = self.all_primes_known_up_to_inclusive,
+                primes = sorted(all_primes),       
+                )
+
+            json.dump(cache, f, separators=(',\n', ': ')) 
 
 
 
@@ -151,21 +162,24 @@ class ErathosthenesFactoriser:
                                         )
                                    )
 
-        print(f'Sieving {p} up to {sieve_up_to_inclusive}')
 
-        for composite in range(p**2, sieve_up_to_inclusive + 1, 2*p):
-            print(f'Adding {composite=}')
+        start = self.all_primes_known_up_to_inclusive + 2
+        # print(f'Sieving {p} up to {sieve_up_to_inclusive}')
+
+        composite_start = start - (start % 2*p) - p
+
+        for composite in range(max(p**2, composite_start), sieve_up_to_inclusive + 1, 2*p):
+            # print(f'Adding {composite=}')
             # self.composites.add(composite)
             self.composites[composite] = None
 
-        start = self.all_primes_known_up_to_inclusive + 2
         if start < p**2:
-            print(f'searching for new primes from: {start}')
+            # print(f'searching for new primes from: {start}')
             for candidate in range(start, p**2, 2):
                 if candidate not in self.composites:
-                    print(f'''New prime: {candidate} found! 
-                            ({p=}, bound: {test_up_to_inclusive} )'''.replace('  ','')
-                         )
+                    # print(f'''New prime: {candidate} found! 
+                    #         ({p=}, bound: {test_up_to_inclusive} )'''.replace('  ','')
+                    #      )
                     self.primes.append(candidate)
 
         if p**2 > self.all_primes_known_up_to_inclusive:
@@ -185,5 +199,5 @@ if __name__ == '__main__':
                   )
          )
 
-    print(f'Primes: {ef.primes}')
-    print(f'Composites: {list(ef.composites)}')
+    # print(f'Primes: {ef.primes}')
+    # print(f'Composites: {list(ef.composites)}')
