@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "additional_difficulty"
+version = "0.0.0"
+authors = [{name = "James Parrott", email = "james.parrott@proton.me"}]
+description = "Does Arithmetic like a human, and calculates the number of operations to do this."
+readme = {file = "README.md", content-type = "text/markdown"}
+requires-python = ">=3"
+keywords = ["Arithmetic"]
+license = {file = "LICENSE.md"}
+classifiers = [
+    "Programming Language :: Python",
+]
+dependencies = []
+
+
+
+
+
+
+
