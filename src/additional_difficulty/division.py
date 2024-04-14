@@ -70,6 +70,9 @@ def difficulty_of_long_division(
     return retval
 
 
+# TODO: Fix Bug:
+difficulty_of_long_division(300,2)
+
 def tuples_not_ending_in(tuples, end_digits_to_exclude):
     for tuple_ in tuples:
         if tuple_[0] % 10 in end_digits_to_exclude:
