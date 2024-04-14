@@ -4,8 +4,8 @@ import collections
 import itertools
 from typing import Iterator
 
-from factoriser import ErathosthenesFactoriser
-from sum_of_two import difficulty_of_sum
+from .factoriser import ErathosthenesFactoriser
+from .sum_of_two import difficulty_of_sum
 
 if len(sys.argv) >= 2:
     N = int(sys.argv[1])
@@ -150,3 +150,5 @@ if __name__ == '__main__':
 
     print(f'Hardest Level (level {hardest_level}) products: {hardest_products}')
 
+def difficulty_of_product_of_two(x, y, *args, **kwargs):
+    return difficulty_of_product([x, y], *args, **kwargs)

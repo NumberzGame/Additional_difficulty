@@ -1,9 +1,9 @@
 import sys
 import collections
 
-from products import digits
-from sum_of_two import difficulty_of_sum
-from differences import difficulty_of_difference
+from .products import digits
+from .sum_of_two import difficulty_of_sum
+from .differences import difficulty_of_difference
 
 N = int((sys.argv[1:2] or [123_456])[0])
 
