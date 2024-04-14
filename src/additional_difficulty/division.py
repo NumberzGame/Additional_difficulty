@@ -56,16 +56,15 @@ def difficulty_of_long_division(
             
             multiplier += 1
 
-        print(f'{buffer=}, {multiplier=}')
+        print(f'{buffer=}, {multiplier=}, {quotient=}')
 
         quotient += multiplier
-
-        remainder += buffer - denominator*multiplier
+        buffer -= denominator*multiplier
+        remainder += buffer
         retval += difficulty_of_difference(buffer, denominator*multiplier, radix, cache_size)
 
-        buffer = remainder
 
-    assert quotient == numerator // denominator, f'{quotient=}, {numerator=}, {denominator=}'
+    assert quotient == numerator // denominator, f'{numerator=}, {denominator=}, {quotient=}, {remainder=}'
 
     return retval
 

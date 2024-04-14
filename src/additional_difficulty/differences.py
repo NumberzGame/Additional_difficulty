@@ -2,23 +2,21 @@ import sys
 import collections
 
 
-N = int((sys.argv[1:2] or [123_456])[0])
 
-MAX = int((sys.argv[2:3] or [200_000])[0])
-
-def differences(n = N):
-    for i in range(1, MAX - n + 1):
+def differences(n, max_):
+    for i in range(1, max_ - n + 1):
         yield n + i, i
 
 
 def difficulty_of_difference(minuend: int, subtrahend: int, radix: int = 10, cache_size = 3) -> int:
-    
+       
     cache = collections.deque([], maxlen=cache_size)
+
+    if minuend < subtrahend:
+        minuend, subtrahend = subtrahend, minuend
 
     m, s = minuend, subtrahend
 
-    if m < s:
-        m, s = s, m
     
     assert m >= s
 
@@ -79,10 +77,9 @@ def difficulty_of_difference(minuend: int, subtrahend: int, radix: int = 10, cac
         
     result += multiplier * m
 
-    assert result == minuend - subtrahend, f'{result=}, {minuend} - {subtrahend}, {borrow=}, {multiplier=}, {radix=}'
+    assert result == minuend - subtrahend, f'{result=}, {m} - {s}, {borrow=}, {multiplier=}, {radix=}'
 
     return retval
-
 
 
 def nums_not_ending_in(nums, end_digits_to_exclude):
@@ -94,10 +91,14 @@ def nums_not_ending_in(nums, end_digits_to_exclude):
 
 if __name__ == '__main__':
 
+    N = int((sys.argv[1:2] or [123_456])[0])
+
+    MAX = int((sys.argv[2:3] or [200_000])[0])
+
     levels = collections.defaultdict(list)
 
 
-    for i, (minuend, subtrahend) in enumerate(differences()):
+    for i, (minuend, subtrahend) in enumerate(differences(n=N, max_=MAX)):
         level = difficulty_of_difference(minuend, subtrahend)
         levels[level].append((minuend, subtrahend))
         # if i >= 18:
