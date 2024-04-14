@@ -5,10 +5,6 @@ import pathlib
 import collections
 from typing import Iterator, Iterable
 
-if len(sys.argv) >= 2:
-    start_x = math.prod(int(arg) for arg in sys.argv[1:])
-else:
-    start_x = 100_000
 
 class ErathosthenesFactoriser:
 
@@ -67,7 +63,7 @@ class ErathosthenesFactoriser:
             prime_factorisation.update([2])
             x //= 2
 
-        assert x % 2,  f"All 2s should've been factored from {x=}: {self.start_x=}, {prime_factorisation=}"
+        assert x % 2,  f"All 2s should've been factored from {x=}: {start_x=}, {prime_factorisation=}"
 
         test_up_to_inclusive = math.isqrt(x)
 
@@ -199,6 +195,11 @@ class ErathosthenesFactoriser:
 if __name__ == '__main__':
     ef = ErathosthenesFactoriser()
     # for prime in ef.primes_from_factoring(start_x):
+
+    if len(sys.argv) >= 2:
+        start_x = math.prod(int(arg) for arg in sys.argv[1:])
+    else:
+        start_x = 100_000
 
     prime_factorisation = ef.factorise(start_x)
 

@@ -5,12 +5,9 @@ from .products import digits
 from .sum_of_two import difficulty_of_sum
 from .differences import difficulty_of_difference
 
-N = int((sys.argv[1:2] or [123_456])[0])
 
-MAX = int((sys.argv[2:3] or [5000])[0])
-
-def fractions(n = N):
-    for i in range(1, MAX - n + 1):
+def fractions(n, max_):
+    for i in range(1, max_ - n + 1):
         yield n * i, i
 
 
@@ -56,7 +53,7 @@ def difficulty_of_long_division(
             
             multiplier += 1
 
-        print(f'{buffer=}, {multiplier=}, {quotient=}')
+        # print(f'{buffer=}, {multiplier=}, {quotient=}')
 
         quotient += multiplier
         buffer -= denominator*multiplier
@@ -82,12 +79,16 @@ def tuples_not_ending_in(tuples, end_digits_to_exclude):
 if __name__ == '__main__':
 
 
+    N = int((sys.argv[1:2] or [123_456])[0])
+
+    MAX = int((sys.argv[2:3] or [5000])[0])
+
     levels = collections.defaultdict(list)
 
 
     # print(f'Factors: {list(prod_gen.two_products(N))}')
     
-    for fraction in fractions(N):
+    for fraction in fractions(N, MAX):
         level = difficulty_of_long_division(*fraction)
         levels[level].append(fraction)
 

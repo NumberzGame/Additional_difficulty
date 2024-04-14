@@ -7,10 +7,6 @@ from typing import Iterator
 from .factoriser import ErathosthenesFactoriser
 from .sum_of_two import difficulty_of_sum
 
-if len(sys.argv) >= 2:
-    N = int(sys.argv[1])
-else:
-    N = 100_000
 
 
 class ProductsGenerator:
@@ -18,7 +14,7 @@ class ProductsGenerator:
         self.factoriser = factoriser or ErathosthenesFactoriser()
 
 
-    def two_products(self, n: int = N) -> Iterator[tuple[int, int]]:
+    def two_products(self, n: int) -> Iterator[tuple[int, int]]:
         
         prime_factorisation = self.factoriser.factorise(n)
         
@@ -118,7 +114,13 @@ def difficulty_of_product(factors: tuple[int, int], radix: int = 10, cache_size 
 if __name__ == '__main__':
 
 
+    if len(sys.argv) >= 2:
+        N = int(sys.argv[1])
+    else:
+        N = 100_000
+
     levels = collections.defaultdict(list)
+
 
     prod_gen = ProductsGenerator()
 
