@@ -25,7 +25,7 @@ def difficulty_of_sum_of_digits(d_x: int, d_y: int) -> float:
 
 def difficulty_of_sum(summands: tuple[int, int], radix: int = 10, cache_size: int = 3) -> float:
     
-    cache = collections.deque([], maxlen=cache_size)
+    cache: collections.deque[tuple[int, int, int]] = collections.deque([], maxlen=cache_size)
 
     x, y = summands
 
@@ -35,7 +35,7 @@ def difficulty_of_sum(summands: tuple[int, int], radix: int = 10, cache_size: in
     assert x <= y
 
     carry = 0
-    retval = 0
+    retval: float = 0.0
 
     result, multiplier = 0, 1
 
@@ -80,7 +80,7 @@ def difficulty_of_sum(summands: tuple[int, int], radix: int = 10, cache_size: in
 
 if __name__ == '__main__':
 
-    N = int((sys.argv[1:2] or [100_000])[0])
+    N = int((sys.argv[1:2] or ['100_000'])[0])
     levels = collections.defaultdict(list)
 
 

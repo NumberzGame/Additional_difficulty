@@ -11,7 +11,7 @@ class ErathosthenesFactoriser:
     # not primes, sieved out
     # composites = set()
     # Stand in for an OrderedSet 
-    composites = {}
+    composites: dict[int, None] = {}
 
     cache_file = pathlib.Path(__file__).parent / 'primes.json'
 
@@ -54,7 +54,7 @@ class ErathosthenesFactoriser:
 
         start_x = x
 
-        prime_factorisation = collections.Counter()
+        prime_factorisation: collections.Counter[int] = collections.Counter()
 
         # Factor out 2s now, so we when testing prime candidates
         # the highest known prime is always odd, and we can 

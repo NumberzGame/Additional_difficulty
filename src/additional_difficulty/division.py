@@ -27,7 +27,7 @@ def difficulty_of_long_division(
     buffer = 0
     remainder = 0
 
-    retval = 0
+    retval: float = 0.0
 
     quotient = 0
 
@@ -74,9 +74,9 @@ def difficulty_of_long_division(
 if __name__ == '__main__':
 
 
-    N = int((sys.argv[1:2] or [123_456])[0])
+    N = int((sys.argv[1:2] or ["123_456"])[0])
 
-    MAX = int((sys.argv[2:3] or [5000])[0])
+    MAX = int((sys.argv[2:3] or ["5000"])[0])
 
     levels = collections.defaultdict(list)
 

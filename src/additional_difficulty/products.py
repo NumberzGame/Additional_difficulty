@@ -28,7 +28,7 @@ class ProductsGenerator:
             if prime_factorisation:
                 factors = self._two_factor_products(prime_factorisation)
             else:
-                factors = [(1, 1)]
+                factors = iter([(1, 1)])
             
             for a, b in factors:
                 yield a * (prime ** i), b * (prime ** (exponent - i))
@@ -70,7 +70,7 @@ def difficulty_of_product_of_digits(d_1: int, d_2: int, radix: int = 10) -> int:
 
 def difficulty_of_product(factors: tuple[int, int], radix: int = 10, cache_size = 3) -> float:
     
-    cache = collections.deque([], maxlen=cache_size)
+    cache: collections.deque[tuple[int, int, int]] = collections.deque([], maxlen=cache_size)
 
     a, b = factors
 
@@ -82,7 +82,7 @@ def difficulty_of_product(factors: tuple[int, int], radix: int = 10, cache_size 
     if a == 1:
         return 1
 
-    retval = 0
+    retval: float = 0.0
 
     result, multiplier = 0, 1
 
@@ -98,6 +98,7 @@ def difficulty_of_product(factors: tuple[int, int], radix: int = 10, cache_size 
             retval += 1
         else:
             retval += difficulty_of_product_of_digits(d_a, d_b)
+            # TODO: cache.append(tuple_)
 
         partial_sum = d_a * d_b * (radix ** (i + j))
 

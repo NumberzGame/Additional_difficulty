@@ -10,7 +10,7 @@ def differences(n: int, max_: int) -> Iterator[tuple[int,int]]:
 
 def difficulty_of_difference(minuend: int, subtrahend: int, radix: int = 10, cache_size: int = 3) -> float:
        
-    cache = collections.deque([], maxlen=cache_size)
+    cache: collections.deque[tuple[int, int, int]] = collections.deque([], maxlen=cache_size)
 
     if minuend < subtrahend:
         minuend, subtrahend = subtrahend, minuend
@@ -86,9 +86,9 @@ def difficulty_of_difference(minuend: int, subtrahend: int, radix: int = 10, cac
 
 if __name__ == '__main__':
 
-    N = int((sys.argv[1:2] or [123_456])[0])
+    N = int((sys.argv[1:2] or ["123_456"])[0])
 
-    MAX = int((sys.argv[2:3] or [200_000])[0])
+    MAX = int((sys.argv[2:3] or ["200_000"])[0])
 
     levels = collections.defaultdict(list)
 
