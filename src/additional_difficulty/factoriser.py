@@ -46,7 +46,7 @@ class ErathosthenesFactoriser:
                                                                be in ascending order, (and 1 is 
                                                                not a prime by convention)""".replace('  ','')
 
-    def factorise(self, x: int) -> dict[int, int]:
+    def factorise(self, x: int) -> collections.Counter[int]:  # dict[int, int]
         """  Side effects:
               - updates cached primes
               - saves factorisation in prime_factorisation
@@ -150,7 +150,7 @@ class ErathosthenesFactoriser:
         return prime_factorisation
 
 
-    def sieve_multiples_of(self, p: int, test_up_to_inclusive: int):
+    def sieve_multiples_of(self, p: int, test_up_to_inclusive: int) -> None:
         # Sieve out multiples of p, an odd prime.  
         # p**2 is the lowest composite number that cannot
         # already have been sieved out as a factor of 

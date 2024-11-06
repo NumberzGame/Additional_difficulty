@@ -1,12 +1,13 @@
 import sys
 import collections
+from typing import Iterator
 
 from .products import digits
 from .sum_of_two import difficulty_of_sum
 from .differences import difficulty_of_difference
 
 
-def fractions(n, max_):
+def fractions(n: int, max_: int) -> Iterator[tuple[int, int]]:
     for i in range(1, max_ - n + 1):
         yield n * i, i
 
@@ -16,7 +17,7 @@ def difficulty_of_long_division(
     denominator: int,
     radix: int = 10,
     cache_size: int = 3,
-    ):
+    ) -> float:
 
     assert numerator % denominator == 0, f'{numerator=}, {denominator=}.  Division with remainder not implemented yet'
 
@@ -67,13 +68,7 @@ def difficulty_of_long_division(
 
 
 # TODO: Fix Bug:
-difficulty_of_long_division(300,2)
-
-def tuples_not_ending_in(tuples, end_digits_to_exclude):
-    for tuple_ in tuples:
-        if tuple_[0] % 10 in end_digits_to_exclude:
-            continue
-        yield tuple_
+# difficulty_of_long_division(300,2)
 
 
 if __name__ == '__main__':

@@ -1,15 +1,15 @@
 import sys
 import collections
+from typing import Iterator
 
 
 
-
-def two_partitions(n):
+def two_partitions(n: int) -> Iterator[tuple[int, int]]:
     for i in range(1, (n // 2) + 1):
         yield i, n-i
 
 
-def difficulty_of_sum_of_digits(d_x: int, d_y: int):
+def difficulty_of_sum_of_digits(d_x: int, d_y: int) -> float:
     if d_x == d_y:
         # doubling can use fast look up in the 2-times table
         return min(d_x, 3)
@@ -23,7 +23,7 @@ def difficulty_of_sum_of_digits(d_x: int, d_y: int):
     return min(d_x, d_y, 1)
 
 
-def difficulty_of_sum(summands: tuple[int, int], radix: int = 10, cache_size = 3) -> int:
+def difficulty_of_sum(summands: tuple[int, int], radix: int = 10, cache_size: int = 3) -> float:
     
     cache = collections.deque([], maxlen=cache_size)
 
@@ -76,11 +76,6 @@ def difficulty_of_sum(summands: tuple[int, int], radix: int = 10, cache_size = 3
 
 
 
-def sums_not_ending_in(sums, end_digits_to_exclude):
-    for tuple_ in sums:
-        if tuple_[0] % 10 in end_digits_to_exclude:
-            continue
-        yield tuple_
 
 
 if __name__ == '__main__':
@@ -116,5 +111,5 @@ if __name__ == '__main__':
 
     # print('\n'.join(str(tuple_) for tuple_ in hardest_sums))
 
-def difficulty_of_sum_of_two(x, y, *args, **kwargs):
+def difficulty_of_sum_of_two(x: int, y: int, *args, **kwargs) -> float:
     return difficulty_of_sum([x,y], *args, **kwargs)

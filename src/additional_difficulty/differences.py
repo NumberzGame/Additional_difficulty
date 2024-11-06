@@ -1,14 +1,14 @@
 import sys
 import collections
+from typing import Iterator
 
 
-
-def differences(n, max_):
+def differences(n: int, max_: int) -> Iterator[tuple[int,int]]:
     for i in range(1, max_ - n + 1):
         yield n + i, i
 
 
-def difficulty_of_difference(minuend: int, subtrahend: int, radix: int = 10, cache_size = 3) -> int:
+def difficulty_of_difference(minuend: int, subtrahend: int, radix: int = 10, cache_size: int = 3) -> float:
        
     cache = collections.deque([], maxlen=cache_size)
 
@@ -20,8 +20,8 @@ def difficulty_of_difference(minuend: int, subtrahend: int, radix: int = 10, cac
     
     assert m >= s
 
-    borrow = 0
-    retval = 0
+    borrow: int = 0
+    retval: int = 0
 
     result, multiplier = 0, 1
 
@@ -82,11 +82,6 @@ def difficulty_of_difference(minuend: int, subtrahend: int, radix: int = 10, cac
     return retval
 
 
-def nums_not_ending_in(nums, end_digits_to_exclude):
-    for tuple_ in nums:
-        if tuple_[0] % 10 in end_digits_to_exclude:
-            continue
-        yield tuple_
 
 
 if __name__ == '__main__':

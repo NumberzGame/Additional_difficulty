@@ -10,18 +10,18 @@ from .sum_of_two import difficulty_of_sum
 
 
 class ProductsGenerator:
-    def __init__(self, factoriser : ErathosthenesFactoriser = None):
+    def __init__(self, factoriser : ErathosthenesFactoriser  = None):
         self.factoriser = factoriser or ErathosthenesFactoriser()
 
 
     def two_products(self, n: int) -> Iterator[tuple[int, int]]:
         
-        prime_factorisation = self.factoriser.factorise(n)
+        prime_factorisation: collections.Counter[int] = self.factoriser.factorise(n)
         
         yield from self._two_factor_products(prime_factorisation)
 
 
-    def _two_factor_products(self, prime_factorisation):
+    def _two_factor_products(self, prime_factorisation: collections.Counter[int]) -> Iterator[tuple[int, int]]:
         prime, exponent = prime_factorisation.popitem()
 
         for i in range((exponent // 2) + 1):
@@ -38,13 +38,13 @@ class ProductsGenerator:
                 yield b * (prime ** i), a * (prime ** (exponent - i))
 
 
-def digits(x: int, radix: int = 10):
+def digits(x: int, radix: int = 10) -> Iterator[int]:
     while x:
         x, r = divmod(x, radix)
         yield r
 
 
-def difficulty_of_product_of_digits(d_1: int, d_2: int, radix: int = 10):
+def difficulty_of_product_of_digits(d_1: int, d_2: int, radix: int = 10) -> int:
     
     product = d_1 * d_2
     
@@ -68,7 +68,7 @@ def difficulty_of_product_of_digits(d_1: int, d_2: int, radix: int = 10):
 
 
 
-def difficulty_of_product(factors: tuple[int, int], radix: int = 10, cache_size = 3) -> int:
+def difficulty_of_product(factors: tuple[int, int], radix: int = 10, cache_size = 3) -> float:
     
     cache = collections.deque([], maxlen=cache_size)
 
@@ -131,11 +131,6 @@ if __name__ == '__main__':
         levels[level].append(factors)
 
 
-    def tuples_not_ending_in(tuples, end_digits_to_exclude):
-        for tuple_ in tuples:
-            if tuple_[0] % 10 in end_digits_to_exclude:
-                continue
-            yield tuple_
 
 
 
@@ -152,5 +147,5 @@ if __name__ == '__main__':
 
     print(f'Hardest Level (level {hardest_level}) products: {hardest_products}')
 
-def difficulty_of_product_of_two(x, y, *args, **kwargs):
+def difficulty_of_product_of_two(x: int, y: int, *args, **kwargs) -> float:
     return difficulty_of_product([x, y], *args, **kwargs)
