@@ -112,4 +112,4 @@ if __name__ == '__main__':
     # print('\n'.join(str(tuple_) for tuple_ in hardest_sums))
 
 def difficulty_of_sum_of_two(x: int, y: int, *args, **kwargs) -> float:
-    return difficulty_of_sum([x,y], *args, **kwargs)
+    return difficulty_of_sum((x,y), *args, **kwargs)

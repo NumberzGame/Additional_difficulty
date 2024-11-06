@@ -10,7 +10,7 @@ from .sum_of_two import difficulty_of_sum
 
 
 class ProductsGenerator:
-    def __init__(self, factoriser : ErathosthenesFactoriser  = None):
+    def __init__(self, factoriser : ErathosthenesFactoriser | None = None):
         self.factoriser = factoriser or ErathosthenesFactoriser()
 
 
@@ -148,4 +148,4 @@ if __name__ == '__main__':
     print(f'Hardest Level (level {hardest_level}) products: {hardest_products}')
 
 def difficulty_of_product_of_two(x: int, y: int, *args, **kwargs) -> float:
-    return difficulty_of_product([x, y], *args, **kwargs)
+    return difficulty_of_product((x, y), *args, **kwargs)

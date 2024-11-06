@@ -50,7 +50,7 @@ def difficulty_of_long_division(
             retval += difficulty_of_sum((denominator * multiplier, denominator), radix, cache_size)
             
             # compare sizes
-            retval + 1
+            retval + 1 # pyright: ignore[reportUnusedExpression]
             
             multiplier += 1
 
@@ -91,8 +91,8 @@ if __name__ == '__main__':
 
 
     for level in sorted(levels)[:-1]:
-        fractions = levels[level]
-        print(f'Level {level} fractions: {fractions}')
+        fractions_ = levels[level]
+        print(f'Level {level} fractions: {fractions_}')
 
 
 

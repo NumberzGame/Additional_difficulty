@@ -21,7 +21,7 @@ class ErathosthenesFactoriser:
     # must be odd
     all_primes_known_up_to_inclusive = 3 #31
 
-    def __init__(self, primes: list[int] = None):
+    def __init__(self, primes: list[int] | None = None):
 
 
         # TODO: Make this update the class variable
