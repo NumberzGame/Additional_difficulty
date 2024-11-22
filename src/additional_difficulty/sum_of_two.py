@@ -72,7 +72,7 @@ def difficulty_of_sum(summands: tuple[int, int], radix: int = 10, cache_size: in
 
     assert result == sum(summands), f'{result=}, {summands=}, {carry=}, {multiplier=}, {radix=}'
 
-    return retval
+    return max(1,retval)
 
 
 

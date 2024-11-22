@@ -79,7 +79,7 @@ def difficulty_of_difference(minuend: int, subtrahend: int, radix: int = 10, cac
 
     assert result == minuend - subtrahend, f'{result=}, {m} - {s}, {borrow=}, {multiplier=}, {radix=}'
 
-    return retval
+    return max(1, retval)
 
 
 

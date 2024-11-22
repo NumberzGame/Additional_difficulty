@@ -64,7 +64,7 @@ def difficulty_of_long_division(
 
     assert quotient == numerator // denominator, f'{numerator=}, {denominator=}, {quotient=}, {remainder=}'
 
-    return retval
+    return max(1, retval)
 
 
 # TODO: Fix Bug:

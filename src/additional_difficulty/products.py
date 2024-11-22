@@ -110,7 +110,7 @@ def difficulty_of_product(factors: tuple[int, int], radix: int = 10, cache_size 
     assert result == math.prod(factors), f'{result=}, {math.prod(factors)=}'
 
 
-    return retval
+    return max(1, retval)
 
 if __name__ == '__main__':
 
