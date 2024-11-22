@@ -2,9 +2,9 @@ import sys
 import collections
 from typing import Iterator
 
-from .products import digits
-from .sum_of_two import difficulty_of_sum
-from .differences import difficulty_of_difference
+from additional_difficulty.products import digits
+from additional_difficulty.sum_of_two import difficulty_of_sum
+from additional_difficulty.differences import difficulty_of_difference
 
 
 def fractions(n: int, max_: int) -> Iterator[tuple[int, int]]:
@@ -83,7 +83,7 @@ if __name__ == '__main__':
 
     # print(f'Factors: {list(prod_gen.two_products(N))}')
     
-    for fraction in fractions(N, MAX):
+    for fraction in fractions(N, MAX+N):
         level = difficulty_of_long_division(*fraction)
         levels[level].append(fraction)
 

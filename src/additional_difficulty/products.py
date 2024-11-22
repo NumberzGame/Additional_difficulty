@@ -4,8 +4,8 @@ import collections
 import itertools
 from typing import Iterator
 
-from .factoriser import ErathosthenesFactoriser
-from .sum_of_two import difficulty_of_sum
+from additional_difficulty.factoriser import ErathosthenesFactoriser
+from additional_difficulty.sum_of_two import difficulty_of_sum
 
 
 
