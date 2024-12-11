@@ -1,2 +1,2 @@
 # Additional Difficulty
-A heuristic for the difficulty of simple arithmetic operations.
+Meta-calculator. Quantifies difficulty of mental arithmetic.  Additionally supports subtraction, multiplication and long-division.

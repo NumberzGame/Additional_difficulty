@@ -1,0 +1,173 @@
+
+
+const difficultyOfSumOfDigits = function(d_x, d_y) {
+    // 0 <= d_x, d_y (both integers) <= 9
+    
+    if (d_x === d_y) {
+        // # doubling can use fast look up in the 2-times table
+        return Math.min(d_x, 3);
+    }
+
+    if ((d_x % 2 === 0) && (d_y % 2 === 0)) {
+        // # subtract 1 if both digits are even
+        return Math.max(1, Math.min(d_x, d_y)-1);
+    }
+    // # add the smaller digit to the larger one, 
+    // # plus the carry bit.
+    return Math.min(d_x, d_y, 1);
+}
+
+
+
+export const difficultyOfSum = function(summands, radix = 10, cache_size = 3) {
+    
+    let cache = []; // collections.deque([], maxlen=cache_size)
+
+    let [x, y] = summands;
+
+    if (y < x) {
+        x, y = y, x;
+    }
+
+    // assert x <= y
+
+    let carry = 0;
+    let retval = 0.0;
+
+    let [result, multiplier] = [0, 1];
+
+
+
+    while ((x > 0) || (carry > 0)) {
+        const r_x = x % radix;
+        const r_y = y % radix;
+        x = (x - r_x) / radix;
+        y = (y - r_y) / radix;
+
+        const tuple_ = (r_x, r_y, carry);
+
+
+        if (cache.includes(tuple_)) {
+            retval += 1;
+        } else {
+            retval += difficultyOfSumOfDigits(r_x, r_y);
+            // # Extra operation to compute the carry.
+            retval += carry;
+        }
+
+        // # Extra operation to add the carry.
+        retval += carry;
+
+        // Mimic a deque.  cache should only hold up 
+        // to the last cache_size tuple_s
+        cache = [...cache.slice(-(cache_size-1)), tuple_];
+
+        const partialSum = (r_x + r_y + carry) % radix;
+        carry = (r_x + r_y + carry - partialSum) / radix;
+        result += partialSum*multiplier
+
+
+        // # Extra operation to store the carry
+        retval += carry;
+
+
+        multiplier *= radix;
+    }
+        
+    result += multiplier * y;
+
+    if (result !== sum(summands)) {
+        throw new Error(`Result: ${result} != sum of: ${summands}. `+
+                        `Carry: ${carry}, Multiplier: ${multiplier}, Radix: ${radix}`
+        );
+    }
+
+    return Math.max(1, retval);
+}
+
+
+// function(minuend: int, subtrahend: int, radix: int = 10, cache_size: int = 3) -> float:
+export const difficultyOfDifference = function(minuend, subtrahend, radix = 10, cache_size = 3){
+       
+    let cache = [];
+
+    if (minuend < subtrahend) {
+        [minuend, subtrahend] = [subtrahend, minuend];
+    }
+
+    let [m, s] = [minuend, subtrahend];
+
+    
+    // assert m >= s
+
+    let borrow = 0;
+    let retval = 0;
+
+    let [result, multiplier] = [0, 1];
+
+    while ((s > 0) || (borrow > 0)) {
+        let r_m = m % radix;
+        const r_s = s % radix;
+        m = (m - r_m) / radix;
+        s = (s - r_s) / radix;
+        // m, r_m = divmod(m, radix)
+        // s, r_s = divmod(s, radix)
+
+        const tuple_ = [r_m, r_s, borrow];
+
+        r_m -= borrow;
+
+        if (r_s > r_m) {
+            borrow = 1;
+        } else {
+            borrow = 0;
+        }
+
+        if (r_m === r_s) {
+            // # Zero difference
+            // pass
+        } else if (r_s + 1 === radix) {
+            // # subtract 9 <=> add 10 & subtract 1
+            retval += 1;
+        } else if (cache.includes(tuple_)) {
+            // # Recall result of the same operation, recently done. 
+            retval += 1;
+        } else if (2*r_s === r_m) {
+            // # Subtract half of self is not so hard.
+            retval += Math.min(r_s, 2);
+        } else if ((r_m % 2 === 0) && (r_s % 2 === 0)) {
+            // # subtract 1 if both digits are even
+            retval += Math.max(1, r_s - 1);
+        } else {
+            // # the borrowed-bit allows larger digits to be subtracted,
+            // # don't add extra difficulty for the borrow.
+            retval += r_s;
+            // # min(r_m - r_s, r_s)
+        }
+
+        // # Extra operation to add the borrow.
+        retval += borrow;
+
+        cache = [...cache.slice(-(cache_size-1)), tuple_];
+
+        const partial_sum_of_diff = radix*borrow + r_m - r_s;
+        result += partial_sum_of_diff*multiplier;
+
+
+        // # Extra operation to store the borrowed bit
+        retval += borrow;
+
+
+        multiplier *= radix;
+    }
+        
+    result += multiplier * m;
+
+    if (result !== minuend - subtrahend) {
+        throw new Error(`$Result: {result}, !== ${minuend} - ${subtrahend}. `+
+                        `m: ${m}, s: ${s}, borrow: ${borrow}, `+
+                        `multiplier: ${multiplier}, radix: ${radix}`);
+    }
+
+    return Math.max(1, retval);
+}

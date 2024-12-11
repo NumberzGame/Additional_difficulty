@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "additional_difficulty"
-version = "0.0.0"
+dynamic = ["version"]
 authors = [{name = "James Parrott", email = "james.parrott@proton.me"}]
 description = "Does Arithmetic like a human, and calculates the number of operations to do this."
 readme = {file = "README.md", content-type = "text/markdown"}
@@ -17,7 +17,18 @@ classifiers = [
 dependencies = []
 
 
+[tool.hatch.version]
+path = "package.json"
+pattern = '"version": "(?P<version>\d+\.\d+\.\d+)",'
 
+[tool.hatch.build.targets.wheel]
+exclude = [
+  "*.mjs",
+  "*.json",
+  "*.js",
+  "*.cjs", 
+  "*.ts", 
+]
 
 
 
