@@ -211,7 +211,7 @@ export const difficultyOfProductOfDigits = function(d_1, d_2, radix = 10) {
 
 
 // (factors: tuple[int, int], radix: int = 10, cache_size = 3) -> float:
-const difficultyOfProduct = function(factors, radix = 10, cache_size = 3) {
+export const difficultyOfProduct = function(factors, radix = 10, cache_size = 3) {
     
     let cache = []; //: collections.deque[tuple[int, int, int]] = collections.deque([], maxlen=cache_size)
 
@@ -273,3 +273,65 @@ const difficultyOfProduct = function(factors, radix = 10, cache_size = 3) {
 
     return Math.max(1, retval);
 }
+
+
+
+// def difficulty_of_long_division(
+//     numerator: int,
+//     denominator: int,
+//     radix: int = 10,
+//     cache_size: int = 3,
+//     ) -> float:
+export const difficultyOfLongDivision = function(numerator, denominator, radix = 10, cache_size = 3) {
+    // assert numerator % denominator == 0, f'{numerator=}, {denominator=}.  Division with remainder not implemented yet'
+
+
+    const numerator_digits = digits(numerator, radix).reverse();
+
+    let buffer = 0;
+    let remainder = 0;
+
+    let retval = 0.0;
+
+    let quotient = 0;
+
+    for (const digit of numerator_digits) {
+
+        buffer *= radix;
+        quotient *= radix;
+        remainder *= radix;
+
+        buffer += digit;
+
+        if (buffer < denominator) {
+            // # compare sizes
+            retval += 1;
+            continue;
+        }
+
+        let multiplier = 0;
+
+        while (denominator * (multiplier + 1) <= buffer) {
+            retval += difficultyOfSum((denominator * multiplier, denominator), radix, cache_size);
+            
+            // # compare sizes
+            retval + 1; //# pyright: ignore[reportUnusedExpression];
+            
+            multiplier += 1;
+        }
+
+        // # print(f'{buffer=}, {multiplier=}, {quotient=}')
+
+        quotient += multiplier;
+        buffer -= denominator*multiplier;
+        remainder += buffer;
+        retval += difficultyOfDifference(buffer, denominator*multiplier, radix, cache_size);
+    }
+
+    // assert quotient == numerator // denominator, f'{numerator=}, {denominator=}, {quotient=}, {remainder=}'
+
+    return Math.max(1, retval);
+}
+
+// # TODO: Fix Bug:
+// # difficulty_of_long_division(300,2)
