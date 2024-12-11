@@ -171,3 +171,105 @@ export const difficultyOfDifference = function(minuend, subtrahend, radix = 10, 
 
     return Math.max(1, retval);
 }
+
+
+// (x: int, radix: int = 10) -> Iterator[int]:
+const digits = function(x, radix = 10) {
+    return Array.from(x.toString(radix)).map((x) => parseInt(x, radix));
+}
+
+
+// def difficultyOfProductOfDigits(d_1: int, d_2: int, radix: int = 10) -> int:
+export const difficultyOfProductOfDigits = function(d_1, d_2, radix = 10) {
+    
+    const product = d_1 * d_2;
+    
+    if ((product === 0) || [d_1, d_2].includes(1)){
+        return 1;
+    }
+
+    if (product <= radix) {
+        // # 2*3, ..., 2*5 and 3*3
+        return 2;
+    }
+
+    if (radix % d_1 === 0 || radix % d_2 === 0 || product <= 2.4 * radix) {
+        // # 2, 5 or a power of 2
+        return 3;
+    }
+
+    if (product === 49) {
+        // 7 x 7 is hardest!
+        return 5;
+    }
+
+    // Every other product of digits to 81 
+    // arbitrarily deemed to merit difficulty 4.
+    return 4;
+}
+    
+
+
+// (factors: tuple[int, int], radix: int = 10, cache_size = 3) -> float:
+const difficultyOfProduct = function(factors, radix = 10, cache_size = 3) {
+    
+    let cache = []; //: collections.deque[tuple[int, int, int]] = collections.deque([], maxlen=cache_size)
+
+    let [a, b] = factors;
+
+    if (a > b) {
+        [a, b] = [b, a];
+    }
+    
+    // assert a <= b
+
+    if (a === 1) {
+        return 1;
+    }
+
+    let retval = 0.0;
+
+    let [result, multiplier] = [0, 1];
+
+    // # Grid multiplication.
+
+    const digits_a = digits(a);
+    const digits_b = digits(b);
+`
+    // for (i, d_a), (j, d_b) in itertools.product(
+    //                                     enumerate(digits(a)),
+    //                                     enumerate(digits(b)),
+    //                                     ):`
+
+    for (const [i, d_a] of digits_a.entries()) {
+        for (const [j, d_b] of digits_b.entries()) {
+
+
+            const tuple_ = [d_a, d_b];
+
+            if (cache.includes(tuple_)) {
+                retval += 1;
+            } else {
+                retval += difficultyOfProductOfDigits(d_a, d_b);
+                // # TODO: cache.append(tuple_)
+                // cache = [...cache.slice(-(cache_size-1)), tuple_];
+            }
+
+            const partial_sum = d_a * d_b * (radix ** (i + j));
+
+
+            retval += difficultyOfSum([result, partial_sum], radix, cache_size);
+
+            result += partial_sum;
+
+        }
+    }
+
+    // assert result == math.prod(factors), f'{result=}, {math.prod(factors)=}'
+    if (result !== a * b) {
+        throw new Error(`result: ${result} != a*b, a: ${a}, b: ${b}`);
+    }
+
+
+    return Math.max(1, retval);
+}
