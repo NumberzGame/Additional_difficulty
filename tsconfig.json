@@ -1,26 +1,20 @@
 {
     "compilerOptions": {
-      "types": [],
-      "target": "ESNext",
-      "useDefineForClassFields": true,
-      "lib": ["DOM", "DOM.Iterable", "ESNext"],
-      "allowJs": false,
-      "skipLibCheck": true,
-      "esModuleInterop": false,
-      "allowSyntheticDefaultImports": true,
+      "module": "node16",
+      "target": "es2020", // set to the *lowest* target you support
       "strict": true,
-      "forceConsistentCasingInFileNames": true,
-      "module": "ESNext",
-      "moduleResolution": "Node",
-      "resolveJsonModule": true,
-      "isolatedModules": true,
+      "verbatimModuleSyntax": true,
       "declaration": true,
-      "noEmit": true,
-      "paths": {
-        "@/*": ["./src/additional_difficulty/*.?ts?"],
-        "@test": ["./tests/*.mjs"]
-      }
+      "sourceMap": true,
+      "declarationMap": true,
+      "outDir": "dist"
     },
-    "include": ["src/additional_difficulty/main.mts", "tests/*.mjs"],
+  
+    // "paths": {
+    // "@/*": ["./src/additional_difficulty/main.mts"],
+    // "@test": ["./tests/*.mts"]
+    // },
+    // "include": ["src/additional_difficulty/main.mts", "tests/*.mjs", "tests/tests.mts"],
+    // "exclude": ["node_modules"]
   }
   
