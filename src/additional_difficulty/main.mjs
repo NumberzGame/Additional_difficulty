@@ -313,7 +313,10 @@ export const difficultyOfLongDivision = function(numerator, denominator, radix =
 
         while (denominator * (multiplier + 1) <= buffer) {
             retval += difficultyOfSum((denominator * multiplier, denominator), radix, cache_size);
-            
+
+            // # Surely this should be retval += 1 ?  
+            // # TODO:  Correct and rebuild cache.
+            // # compare sizes
             // # compare sizes
             retval + 1; //# pyright: ignore[reportUnusedExpression];
             
