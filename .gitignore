@@ -161,3 +161,4 @@ cython_debug/
 
 primes.json
 /node_modules
+*.tgz
