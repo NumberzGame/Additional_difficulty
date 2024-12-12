@@ -48,11 +48,8 @@ def difficulty_of_long_division(
 
         while denominator * (multiplier + 1) <= buffer:
             retval += difficulty_of_sum((denominator * multiplier, denominator), radix, cache_size)
-            
-            # Surely this should be retval += 1 ?  
-            # TODO:  Correct and rebuild cache.
-            # compare sizes
-            retval + 1 # pyright: ignore[reportUnusedExpression]
+
+            retval += 1
             
             multiplier += 1
 
