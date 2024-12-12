@@ -5,39 +5,39 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "directories": {
-      "test": "tests"
+        "test": "tests"
     },
     "scripts": {
-      "test": "mocha tests/tests.mjs",
-      "prepublish": "tsc"
+        "test": "mocha tests/tests.mjs",
+        "prepublish": "tsc"
     },
     "files": [
-     "./src/sub_byte/main.mjs"
+        "./src/sub_byte/main.mjs"
     ],
     "repository": {
-      "type": "git",
-      "url": "git+https://github.com/JamesParrott/additional_difficulty.git"
+        "type": "git",
+        "url": "git+https://github.com/JamesParrott/additional_difficulty.git"
     },
     "keywords": [
-      "Heuristic",
-      "Arithmetic"
+        "Heuristic",
+        "Arithmetic"
     ],
     "author": "James Parrott <james.parrott@proton.me>",
     "license": "MIT",
     "bugs": {
-      "url": "https://github.com/JamesParrott/additional_difficulty/issues"
+        "url": "https://github.com/JamesParrott/additional_difficulty/issues"
     },
     "homepage": "https://github.com/JamesParrott/additional_difficulty#readme",
     "devDependencies": {
-      "@eslint/js": "^9.13.0",
-      "eslint": "^9.13.0",
-      "fast-check": "^3.22.0",
-      "globals": "^15.11.0",
-      "mocha": "^10.7.3",
-      "prettier": "3.3.3"
+        "@eslint/js": "^9.13.0",
+        "eslint": "^9.13.0",
+        "fast-check": "^3.22.0",
+        "globals": "^15.11.0",
+        "mocha": "^10.7.3",
+        "prettier": "3.3.3",
+        "typescript": "^5.7.2"
     },
     "overrides": {
-      "glob": "^11.0.0"
+        "glob": "^11.0.0"
     }
-  }
-  
+}

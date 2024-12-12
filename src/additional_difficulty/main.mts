@@ -1,6 +1,6 @@
 
 
-const difficultyOfSumOfDigits = function(d_x, d_y) {
+const difficultyOfSumOfDigits = function(d_x: number, d_y: number): number {
     // 0 <= d_x, d_y (both integers) <= 9
     
     if (d_x === d_y) {
@@ -19,14 +19,17 @@ const difficultyOfSumOfDigits = function(d_x, d_y) {
 
 
 
-export const difficultyOfSum = function(summands, radix = 10, cache_size = 3) {
+export const difficultyOfSum = function(
+    summands: [number, number],
+    radix: number = 10,
+    cache_size: number = 3): number {
     
-    let cache = []; // collections.deque([], maxlen=cache_size)
+    let cache: Array<[number,number,number]> = []; // collections.deque([], maxlen=cache_size)
 
     let [x, y] = summands;
 
     if (y < x) {
-        x, y = y, x;
+        [x, y] = [y, x];
     }
 
     // assert x <= y
@@ -44,7 +47,7 @@ export const difficultyOfSum = function(summands, radix = 10, cache_size = 3) {
         x = (x - r_x) / radix;
         y = (y - r_y) / radix;
 
-        const tuple_ = (r_x, r_y, carry);
+        const tuple_ = [r_x, r_y, carry];
 
 
         if (cache.includes(tuple_)) {

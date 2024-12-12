@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-      "types": ["node", "@testing-library/jest-dom", "vitest/globals"],
+      "types": [],
       "target": "ESNext",
       "useDefineForClassFields": true,
       "lib": ["DOM", "DOM.Iterable", "ESNext"],
@@ -17,10 +17,10 @@
       "declaration": true,
       "noEmit": true,
       "paths": {
-        "@/*": ["./src/*.mjs"],
+        "@/*": ["./src/additional_difficulty/*.?ts?"],
         "@test": ["./tests/*.mjs"]
       }
     },
-    "include": ["src/additional_difficulty", "tests"],
+    "include": ["src/additional_difficulty/main.mts", "tests/*.mjs"],
   }
   
