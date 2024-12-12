@@ -13,7 +13,7 @@
         "prepublish": "tsc"
     },
     "files": [
-        "./src/additional_difficulty/main.mts"
+        "./src/additional_difficulty/index.mts"
     ],
     "repository": {
         "type": "git",
