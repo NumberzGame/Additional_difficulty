@@ -47,7 +47,7 @@ export const difficultyOfSum = function(
         x = (x - r_x) / radix;
         y = (y - r_y) / radix;
 
-        const tuple_ = [r_x, r_y, carry];
+        const tuple_: [number,number,number] = [r_x, r_y, carry];
 
 
         if (cache.includes(tuple_)) {
@@ -79,7 +79,7 @@ export const difficultyOfSum = function(
         
     result += multiplier * y;
 
-    if (result !== sum(summands)) {
+    if (result !== summands[0] + summands[1]) {
         throw new Error(`Result: ${result} != sum of: ${summands}. `+
                         `Carry: ${carry}, Multiplier: ${multiplier}, Radix: ${radix}`
         );
@@ -90,9 +90,14 @@ export const difficultyOfSum = function(
 
 
 // function(minuend: int, subtrahend: int, radix: int = 10, cache_size: int = 3) -> float:
-export const difficultyOfDifference = function(minuend, subtrahend, radix = 10, cache_size = 3){
+export const difficultyOfDifference = function(
+    minuend: number, 
+    subtrahend: number, 
+    radix: number = 10,
+    cache_size: number = 3,
+    ){
        
-    let cache = [];
+    let cache: Array<[number,number,number]> = [];
 
     if (minuend < subtrahend) {
         [minuend, subtrahend] = [subtrahend, minuend];
@@ -116,7 +121,7 @@ export const difficultyOfDifference = function(minuend, subtrahend, radix = 10, 
         // m, r_m = divmod(m, radix)
         // s, r_s = divmod(s, radix)
 
-        const tuple_ = [r_m, r_s, borrow];
+        const tuple_: [number, number, number] = [r_m, r_s, borrow];
 
         r_m -= borrow;
 
@@ -177,13 +182,17 @@ export const difficultyOfDifference = function(minuend, subtrahend, radix = 10, 
 
 
 // (x: int, radix: int = 10) -> Iterator[int]:
-const digits = function(x, radix = 10) {
+const digits = function(
+    x: number,
+    radix: number = 10,
+    ) {
     return Array.from(x.toString(radix)).map((x) => parseInt(x, radix));
 }
 
 
 // def difficultyOfProductOfDigits(d_1: int, d_2: int, radix: int = 10) -> int:
-export const difficultyOfProductOfDigits = function(d_1, d_2, radix = 10) {
+export const difficultyOfProductOfDigits = function(
+    d_1: number, d_2: number, radix: number = 10) {
     
     const product = d_1 * d_2;
     
@@ -214,9 +223,10 @@ export const difficultyOfProductOfDigits = function(d_1, d_2, radix = 10) {
 
 
 // (factors: tuple[int, int], radix: int = 10, cache_size = 3) -> float:
-export const difficultyOfProduct = function(factors, radix = 10, cache_size = 3) {
+export const difficultyOfProduct = function(
+    factors: [number, number], radix: number = 10, cache_size: number = 3) {
     
-    let cache = []; //: collections.deque[tuple[int, int, int]] = collections.deque([], maxlen=cache_size)
+    let cache: Array<[number,number]> = []; //: collections.deque[tuple[int, int, int]] = collections.deque([], maxlen=cache_size)
 
     let [a, b] = factors;
 
@@ -248,7 +258,7 @@ export const difficultyOfProduct = function(factors, radix = 10, cache_size = 3)
         for (const [j, d_b] of digits_b.entries()) {
 
 
-            const tuple_ = [d_a, d_b];
+            const tuple_: [number, number] = [d_a, d_b];
 
             if (cache.includes(tuple_)) {
                 retval += 1;
@@ -285,7 +295,11 @@ export const difficultyOfProduct = function(factors, radix = 10, cache_size = 3)
 //     radix: int = 10,
 //     cache_size: int = 3,
 //     ) -> float:
-export const difficultyOfLongDivision = function(numerator, denominator, radix = 10, cache_size = 3) {
+export const difficultyOfLongDivision = function(
+    numerator: number,
+    denominator: number,
+    radix: number = 10,
+    cache_size: number = 3) {
     // assert numerator % denominator == 0, f'{numerator=}, {denominator=}.  Division with remainder not implemented yet'
 
 
@@ -315,7 +329,7 @@ export const difficultyOfLongDivision = function(numerator, denominator, radix =
         let multiplier = 0;
 
         while (denominator * (multiplier + 1) <= buffer) {
-            retval += difficultyOfSum((denominator * multiplier, denominator), radix, cache_size);
+            retval += difficultyOfSum([denominator * multiplier, denominator], radix, cache_size);
 
 
             retval += 1; 
