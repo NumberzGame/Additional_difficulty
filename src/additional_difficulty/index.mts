@@ -19,7 +19,7 @@ const difficultyOfSumOfDigits = function(d_x: number, d_y: number): number {
 
 
 
-export const difficultyOfSum = function(
+const difficultyOfSumOfArray = function(
     summands: [number, number],
     radix: number = 10,
     cache_size: number = 3): number {
@@ -88,6 +88,10 @@ export const difficultyOfSum = function(
     return Math.max(1, retval);
 }
 
+
+export const difficultyOfSum = function(x: number, y: number, radix: number = 10, cache_size: number = 3): number{
+    return difficultyOfSumOfArray([x,y], radix, cache_size);
+}
 
 // function(minuend: int, subtrahend: int, radix: int = 10, cache_size: int = 3) -> float:
 export const difficultyOfDifference = function(
@@ -191,7 +195,7 @@ const digits = function(
 
 
 // def difficultyOfProductOfDigits(d_1: int, d_2: int, radix: int = 10) -> int:
-export const difficultyOfProductOfDigits = function(
+const difficultyOfProductOfDigits = function(
     d_1: number, d_2: number, radix: number = 10) {
     
     const product = d_1 * d_2;
@@ -223,7 +227,7 @@ export const difficultyOfProductOfDigits = function(
 
 
 // (factors: tuple[int, int], radix: int = 10, cache_size = 3) -> float:
-export const difficultyOfProduct = function(
+const difficultyOfProductOfArray = function(
     factors: [number, number], radix: number = 10, cache_size: number = 3) {
     
     let cache: Array<[number,number]> = []; //: collections.deque[tuple[int, int, int]] = collections.deque([], maxlen=cache_size)
@@ -271,7 +275,7 @@ export const difficultyOfProduct = function(
             const partial_sum = d_a * d_b * (radix ** (i + j));
 
 
-            retval += difficultyOfSum([result, partial_sum], radix, cache_size);
+            retval += difficultyOfSumOfArray([result, partial_sum], radix, cache_size);
 
             result += partial_sum;
 
@@ -288,6 +292,9 @@ export const difficultyOfProduct = function(
 }
 
 
+export const difficultyOfProduct = function(x: number, y: number, radix: number = 10, cache_size: number = 3): number{
+    return difficultyOfProductOfArray([x,y], radix, cache_size);
+}
 
 // def difficulty_of_long_division(
 //     numerator: int,
@@ -329,7 +336,7 @@ export const difficultyOfLongDivision = function(
         let multiplier = 0;
 
         while (denominator * (multiplier + 1) <= buffer) {
-            retval += difficultyOfSum([denominator * multiplier, denominator], radix, cache_size);
+            retval += difficultyOfSumOfArray([denominator * multiplier, denominator], radix, cache_size);
 
 
             retval += 1; 
