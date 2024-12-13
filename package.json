@@ -2,14 +2,14 @@
     "name": "additional_difficulty",
     "version": "0.0.0",
     "description": "Meta-calculator. Quantifies difficulty of mental arithmetic.  Additionally supports subtraction, multiplication and long-division.",
-    "main": "dist/index.js",
+    "main": "dist/index.mjs",
     "type": "module",
-    "types": "dist/index.d.ts",
+    "types": "dist/index.d.mts",
     "directories": {
         "test": "tests"
     },
     "scripts": {
-        "test": "mocha tests/tests.mts",
+        "test": "mocha tests/tests.mjs",
         "prepublish": "tsc"
     },
     "files": [
