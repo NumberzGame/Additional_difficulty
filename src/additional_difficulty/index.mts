@@ -274,7 +274,7 @@ const difficultyOfProductOfArray = function(
 
             const partial_sum = d_a * d_b * (radix ** (i + j));
 
-            console.log(`partial_sum: ${partial_sum}, i: ${i}, d_a: ${d_a}, j: ${j}, d_b: ${d_b}`);
+            // console.log(`partial_sum: ${partial_sum}, i: ${i}, d_a: ${d_a}, j: ${j}, d_b: ${d_b}`);
 
             retval += difficultyOfSumOfArray([result, partial_sum], radix, cache_size);
 
