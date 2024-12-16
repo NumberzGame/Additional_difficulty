@@ -292,7 +292,10 @@ const difficultyOfProductOfArray = function(
     return Math.max(1, retval);
 }
 
-difficultyOfProductOfArray([87,2])
+// difficultyOfProductOfArray([87,2])
+// difficultyOfProductOfArray([50, 3])
+// difficultyOfProductOfArray([75, 3])
+// difficultyOfProductOfArray([3, 75])
 
 export const difficultyOfProduct = function(x: number, y: number, radix: number = 10, cache_size: number = 3): number{
     return difficultyOfProductOfArray([x,y], radix, cache_size);
