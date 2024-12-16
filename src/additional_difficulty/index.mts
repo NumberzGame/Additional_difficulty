@@ -190,7 +190,7 @@ const digits = function(
     x: number,
     radix: number = 10,
     ) {
-    return Array.from(x.toString(radix)).map((x) => parseInt(x, radix));
+    return Array.from(x.toString(radix)).reverse().map((x) => parseInt(x, radix));
 }
 
 
@@ -274,6 +274,7 @@ const difficultyOfProductOfArray = function(
 
             const partial_sum = d_a * d_b * (radix ** (i + j));
 
+            console.log(`partial_sum: ${partial_sum}, i: ${i}, d_a: ${d_a}, j: ${j}, d_b: ${d_b}`);
 
             retval += difficultyOfSumOfArray([result, partial_sum], radix, cache_size);
 
@@ -291,6 +292,7 @@ const difficultyOfProductOfArray = function(
     return Math.max(1, retval);
 }
 
+difficultyOfProductOfArray([87,2])
 
 export const difficultyOfProduct = function(x: number, y: number, radix: number = 10, cache_size: number = 3): number{
     return difficultyOfProductOfArray([x,y], radix, cache_size);

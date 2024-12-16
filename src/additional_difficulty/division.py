@@ -66,10 +66,6 @@ def difficulty_of_long_division(
     return max(1, retval)
 
 
-# TODO: Fix Bug:
-# difficulty_of_long_division(300,2)
-
-
 if __name__ == '__main__':
 
 
