@@ -1,26 +1,25 @@
 {
-    "compilerOptions": {
-      "module": "ESNext",
-      "target": "ESNext", // set to the *lowest* target you support
-      "strict": true,
-      "verbatimModuleSyntax": true,
-      "declaration": true,
-      "types": ["node" ],
-      "outDir": "dist",
-      "useDefineForClassFields": true,
-      "lib": [ "ESNext"],
-      "allowJs": false,
-      "skipLibCheck": true,
-      "esModuleInterop": true,
-      "allowSyntheticDefaultImports": true,
-      "strictNullChecks": true,
-      "forceConsistentCasingInFileNames": true,
-      "moduleResolution": "Node",
-      "resolveJsonModule": true,
-      "isolatedModules": true,
-      "paths": {
+  "compilerOptions": {
+    "declaration": true,
+    "types": ["node" ],
+    "target": "ESNext",
+    "outDir": "dist",
+    "useDefineForClassFields": true,
+    "lib": [ "ESNext"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "paths": {
       "@/*": ["./src/additional_difficulty/index.mts"]
-      }},
-    "include": ["src"],
-  }
-  
+    }
+  },
+  "include": ["src"]
+}
