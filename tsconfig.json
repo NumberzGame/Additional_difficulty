@@ -1,20 +1,26 @@
 {
     "compilerOptions": {
-      "module": "node16",
-      "target": "es2020", // set to the *lowest* target you support
+      "module": "ESNext",
+      "target": "ESNext", // set to the *lowest* target you support
       "strict": true,
       "verbatimModuleSyntax": true,
       "declaration": true,
-      "sourceMap": true,
-      "declarationMap": true,
-      "outDir": "dist"
-    },
-  
-    // "paths": {
-    // "@/*": ["./src/additional_difficulty/main.mts"],
-    // "@test": ["./tests/*.mts"]
-    // },
-    // "include": ["src/additional_difficulty/main.mts", "tests/*.mjs", "tests/tests.mts"],
-    // "exclude": ["node_modules"]
+      "types": ["node" ],
+      "outDir": "dist",
+      "useDefineForClassFields": true,
+      "lib": [ "ESNext"],
+      "allowJs": false,
+      "skipLibCheck": true,
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "strictNullChecks": true,
+      "forceConsistentCasingInFileNames": true,
+      "moduleResolution": "Node",
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "paths": {
+      "@/*": ["./src/additional_difficulty/index.mts"]
+      }},
+    "include": ["src"],
   }
   
