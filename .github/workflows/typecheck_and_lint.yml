@@ -1,0 +1,63 @@
+name: Type check Python 
+
+description: Run Mypy and Pyright.
+
+on:
+  push:
+  pull_request:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+
+  mypy:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [
+          3.13,
+        ]
+        os: [
+          "ubuntu-latest",
+        ]
+
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install code for deps
+      run: pip install -e .[mypy]
+
+    - name: Run mypy
+      run: mypy src/sub_byte
+
+  pyright:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [
+          3.13,
+        ]
+        os: [
+          "ubuntu-latest",
+        ]
+
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install code for deps
+      run: pip install -e .
+
+    - uses: jakebailey/pyright-action@v2
+      with:
+        extra-args:
+          src/additional_difficulty/*.py

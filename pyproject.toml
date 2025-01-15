@@ -14,8 +14,21 @@ license = {file = "LICENSE.md"}
 classifiers = [
     "Programming Language :: Python",
 ]
-dependencies = []
 
+dependencies = [
+]
+[project.optional-dependencies]
+"mypy" = [
+    "mypy"
+]
+"pyright" = [
+    "pyright"
+]
+
+
+[project.urls]   
+"Homepage" = "https://github.com/NumberzGame/sub_byte"
+"Bug Tracker" = "https://github.com/NumberzGame/sub_byte/issues"
 
 [tool.hatch.version]
 path = "package.json"
@@ -27,10 +40,11 @@ exclude = [
   "*.mts",
   "*.json",
   "*.js",
-  "*.cjs", 
-  "*.ts", 
+  "*.jsx",
+  "*.cjs",  
+  "*.ts",
+  "*.tsx",
 ]
-
 
 
 

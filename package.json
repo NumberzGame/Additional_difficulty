@@ -1,11 +1,11 @@
 {
     "name": "additional_difficulty",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Meta-calculator. Quantifies difficulty of mental arithmetic.  Additionally supports subtraction, multiplication and long-division.",
     "main": "./dist/index.mjs",
     "types": "./dist/index.d.mts",
     "directories": {
-      "test": "tests"
+        "test": "tests"
     },
     "scripts": {
         "prepublish": "tsc",
@@ -13,8 +13,6 @@
         "eslint": "eslint . --cache",
         "prettier": "prettier --check \"**/*.{js,msx,mjs,ts,tsx,mts,mtx}\"",
         "prettier:write": "prettier --write \"**/*.{js,msx,mjs,ts,tsx,mts,mtx}\""
-        
-
     },
     "files": [
         "./dist/index.mjs",
@@ -40,9 +38,11 @@
         "eslint": "^9.18.0",
         "fast-check": "^3.22.0",
         "globals": "^15.11.0",
-        "prettier": "3.3.3"
-      },
-      "overrides": {
+        "prettier": "3.3.3",
+        "typescript": "^5.7.3",
+        "typescript-eslint": "^8.20.0"
+    },
+    "overrides": {
         "glob": "^11.0.0"
-      }
+    }
 }
