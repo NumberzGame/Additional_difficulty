@@ -25,12 +25,18 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+
+    - name: Make venv
+      run: uv venv --python ${{ matrix.python-version }}
 
     - name: Install code for deps
-      run: pip install -e .[mypy]
+      run: uv pip install -e .[pyright]
 
     - name: Run mypy
       run: mypy src/sub_byte
@@ -50,14 +56,14 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+
+    - name: Make venv
+      run: uv venv --python ${{ matrix.python-version }}
 
     - name: Install code for deps
-      run: pip install -e .
+      run: uv pip install -e .[pyright]
 
-    - uses: jakebailey/pyright-action@v2
-      with:
-        extra-args:
-          src/additional_difficulty/*.py
+    - name: Run Pyright
+      run: pyright .
