@@ -1,2 +1,2 @@
 # Additional Difficulty
-Meta-calculator. Quantifies difficulty of mental arithmetic.  Additionally supports subtraction, multiplication and long-division.
+A subjective measure for the difficulty (for humans) of arithmetic calculations.  Additionally supports subtraction, multiplication and long-division.
