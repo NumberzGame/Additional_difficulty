@@ -37,7 +37,7 @@ jobs:
     - name: Run mypy
       run: |
         . ./.venv/bin/activate
-        mypy src/sub_byte
+        mypy src/additional_difficulty
 
   pyright:
     strategy:
