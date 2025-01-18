@@ -35,7 +35,9 @@ jobs:
       run: uv pip install -e .[mypy]
 
     - name: Run mypy
-      run: mypy src/sub_byte
+      run: |
+        . ./.venv/bin/activate
+        mypy src/sub_byte
 
   pyright:
     strategy:
@@ -62,4 +64,6 @@ jobs:
       run: uv pip install -e .[pyright]
 
     - name: Run Pyright
-      run: pyright .
+      run: |
+        . ./.venv/bin/activate
+        pyright .
