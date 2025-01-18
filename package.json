@@ -1,7 +1,7 @@
 {
     "name": "additional_difficulty",
     "version": "0.0.2",
-    "description": "Meta-calculator. Quantifies difficulty of mental arithmetic.  Additionally supports subtraction, multiplication and long-division.",
+    "description": "Quantifies the difficulty of mental arithmetic calculations.",
     "main": "./dist/index.mjs",
     "types": "./dist/index.d.mts",
     "directories": {
@@ -23,8 +23,9 @@
         "url": "git+https://github.com/NumberzGame/Additional_difficulty.git"
     },
     "keywords": [
-        "Heuristic",
-        "Arithmetic"
+        "Mental Arithmetic",
+        "Mathematics",
+        "Education"
     ],
     "author": "James Parrott <james.parrott@proton.me>",
     "license": "MIT",
